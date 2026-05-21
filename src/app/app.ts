@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  template: `<div class="frame"><router-outlet /></div>`,
+  styles: `
+    :host { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+  `,
 })
-export class App {
-  protected readonly title = signal('uniagro');
-}
+export class App {}
