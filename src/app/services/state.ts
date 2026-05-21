@@ -1,43 +1,51 @@
 import { Injectable, signal, computed } from '@angular/core';
 
 export interface Animal {
-  esp: string;
-  prop: string;
-  raza: string;
-  cant: string;
-  peso: string;
-  edad: string;
-  fierro: string;
-  salud: string;
-  foto: string;
+  esp: string; prop: string; raza: string; cant: string;
+  peso: string; edad: string; fierro: string; salud: string;
+  foto1: string; foto2: string; foto3: string;
 }
 
 export interface AppState {
-  nombre: string; dpi: string; telefono: string; credito: string; agencia: string;
-  finca: string; region: string; area: string; unidad: string; gps: string; fotoFinca: string;
+  // M1
+  nombre: string; dpi1: string; dpi2: string; nit: string; telefono: string;
+  credito: string; agencia: string;
+  // M2
+  finca: string; depto: string; municipio: string; referencia: string;
+  area: string; unidad: string; gps: string; fotoFinca: string;
+  // M3
   animales: Animal[];
-  tienePasto: string; areaP: string; totalAnim: string; fuenteAgua: string; tienePozo: string;
-  tecnificacion: string; desechos: string; obsInstalaciones: string;
-  tipoSiniestro: string; idAnimal: string; espSiniestro: string; fechaSiniestro: string;
+  // M4
+  tienePasto: string; areaP: string; unidadP: string; totalAnim: string;
+  fuentesAgua: string[]; alimentacion: string;
+  // M5
+  tecnificacion: string; desechos: string[]; obsInstalaciones: string;
+  // M6
+  tipoSiniestro: string; causaAccidente: string; descEnfermedad: string;
+  idAnimal: string; espSiniestro: string; fechaSiniestro: string;
   descSiniestro: string; fotoSiniestro: string;
+  // M7
+  tieneVacunacion: string; tieneDesparasitacion: string; tieneVitaminas: string;
+  ultimoTratamiento: string; obsSanitarias: string;
 }
 
-const STORAGE_KEY = 'uniagro_state';
+const STORAGE_KEY = 'uniagro_v2_state';
 
 const defaultState: AppState = {
-  nombre: '', dpi: '', telefono: '', credito: '', agencia: '',
-  finca: '', region: '', area: '', unidad: 'Manzanas', gps: '', fotoFinca: '',
-  animales: [],
-  tienePasto: '', areaP: '', totalAnim: '', fuenteAgua: '', tienePozo: '',
-  tecnificacion: '', desechos: '', obsInstalaciones: '',
-  tipoSiniestro: '', idAnimal: '', espSiniestro: '', fechaSiniestro: '',
-  descSiniestro: '', fotoSiniestro: '',
+  nombre:'', dpi1:'', dpi2:'', nit:'', telefono:'', credito:'', agencia:'',
+  finca:'', depto:'', municipio:'', referencia:'', area:'', unidad:'Manzanas', gps:'', fotoFinca:'',
+  animales:[],
+  tienePasto:'', areaP:'', unidadP:'Manzanas', totalAnim:'', fuentesAgua:[], alimentacion:'',
+  tecnificacion:'', desechos:[], obsInstalaciones:'',
+  tipoSiniestro:'', causaAccidente:'', descEnfermedad:'', idAnimal:'',
+  espSiniestro:'', fechaSiniestro:'', descSiniestro:'', fotoSiniestro:'',
+  tieneVacunacion:'', tieneDesparasitacion:'', tieneVitaminas:'',
+  ultimoTratamiento:'', obsSanitarias:'',
 };
 
 @Injectable({ providedIn: 'root' })
 export class StateService {
   private _state = signal<AppState>(this.load());
-
   readonly state = this._state.asReadonly();
 
   readonly cargaAnimal = computed(() => {
@@ -47,46 +55,41 @@ export class StateService {
     return null;
   });
 
+  readonly totalCabezas = computed(() =>
+    this._state().animales.reduce((s, a) => s + (parseInt(a.cant) || 0), 0)
+  );
+
   patch(partial: Partial<AppState>) {
+    this._state.update(s => { const n = { ...s, ...partial }; this.save(n); return n; });
+  }
+
+  toggleArray(key: 'fuentesAgua' | 'desechos', val: string) {
     this._state.update(s => {
-      const next = { ...s, ...partial };
-      this.save(next);
-      return next;
+      const arr = [...s[key]];
+      const idx = arr.indexOf(val);
+      if (idx >= 0) arr.splice(idx, 1); else arr.push(val);
+      const n = { ...s, [key]: arr };
+      this.save(n);
+      return n;
     });
   }
 
   addAnimal(a: Animal) {
-    this._state.update(s => {
-      const next = { ...s, animales: [...s.animales, a] };
-      this.save(next);
-      return next;
-    });
+    this._state.update(s => { const n = { ...s, animales: [...s.animales, a] }; this.save(n); return n; });
   }
 
   removeAnimal(idx: number) {
     this._state.update(s => {
       const animales = s.animales.filter((_, i) => i !== idx);
-      const next = { ...s, animales };
-      this.save(next);
-      return next;
+      const n = { ...s, animales }; this.save(n); return n;
     });
   }
 
-  reset() {
-    localStorage.removeItem(STORAGE_KEY);
-    this._state.set({ ...defaultState, animales: [] });
-  }
+  reset() { localStorage.removeItem(STORAGE_KEY); this._state.set({ ...defaultState, animales:[], fuentesAgua:[], desechos:[] }); }
 
   private load(): AppState {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? { ...defaultState, ...JSON.parse(raw) } : { ...defaultState };
-    } catch {
-      return { ...defaultState };
-    }
+    try { const r = localStorage.getItem(STORAGE_KEY); return r ? { ...defaultState, ...JSON.parse(r) } : { ...defaultState }; }
+    catch { return { ...defaultState }; }
   }
-
-  private save(s: AppState) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
-  }
+  private save(s: AppState) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {} }
 }
