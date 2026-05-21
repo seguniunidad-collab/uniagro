@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Uniagro — Registro de Hato Pecuario</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px 0}
+:root{
+  --ua:#1A4F8C;--ua2:#1565A8;--ua3:#E8F0FA;--ua4:#B8D0EE;--ua5:#0D3A6B;
+  --g50:#EAF3DE;--g100:#C0DD97;--g600:#3B6D11;--g800:#27500A;
+  --a50:#FAEEDA;--a100:#FAC775;--a600:#854F0B;--a800:#633806;
+  --r50:#FCEBEB;--r100:#F7C1C1;--r600:#A32D2D;--r800:#791F1F;
+  --gr100:#D3D1C7;--gr400:#888780;
+  --bg:#fff;--bg2:#f5f5f5;--txt:#1a1a1a;--txt2:#666;--brd:#e0e0e0;--brd2:#ccc;
+  --rad:8px;--radl:12px;
+}
+.frame{width:375px;background:#fff;border-radius:28px;overflow:hidden;min-height:700px;display:flex;flex-direction:column;box-shadow:0 4px 24px rgba(0,0,0,.12)}
+.sc{display:none;flex-direction:column;flex:1}
+.sc.on{display:flex}
+.sb{background:var(--ua5);padding:10px 18px 6px;display:flex;justify-content:space-between;align-items:center}
+.sb span{font-size:11px;color:#a8c8e8;font-weight:500}
+.hdr{background:var(--ua);padding:12px 18px 16px;display:flex;align-items:center;gap:10px}
+.hbk{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#fff;font-size:16px;flex-shrink:0}
+.hico{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hico i{font-size:15px;color:#fff}
+.ht{font-size:14px;font-weight:600;color:#fff}
+.hs{font-size:11px;color:#a8c8e8;margin-top:1px}
+.pgw{background:var(--ua);padding:0 18px 12px}
+.pgt{background:rgba(255,255,255,.2);height:3px;border-radius:2px}
+.pgf{height:100%;border-radius:2px;background:#a8d4f5;transition:width .4s}
+.pgl{font-size:10px;color:#a8c8e8;margin-top:5px}
+.body{flex:1;overflow-y:auto;padding:14px}
+.stl{font-size:11px;font-weight:600;color:var(--gr400);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.card{background:#fff;border:0.5px solid var(--brd);border-radius:var(--radl);padding:13px 15px;margin-bottom:10px}
+.ct{font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.ct i{font-size:14px}
+label{font-size:12px;color:var(--txt2);display:block;margin-bottom:4px;margin-top:8px}
+label:first-of-type{margin-top:0}
+input[type=text],input[type=number],select,textarea{width:100%;font-size:14px;padding:8px 10px;border:0.5px solid var(--brd2);border-radius:var(--rad);outline:none;font-family:inherit;background:#fff;color:var(--txt)}
+input:focus,select:focus,textarea:focus{border-color:var(--ua);box-shadow:0 0 0 2px rgba(26,79,140,.15)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nf{padding:14px 16px 18px;display:flex;gap:8px;border-top:0.5px solid var(--brd)}
+.bb{padding:10px 14px;border-radius:var(--rad);border:0.5px solid var(--brd2);background:#fff;font-size:14px;color:var(--txt2);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit}
+.bn{flex:1;padding:11px;background:var(--ua);color:#fff;border:none;border-radius:var(--rad);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
+.bn:hover{background:var(--ua2)}
+.splash-body{flex:1;background:var(--ua);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 24px;text-align:center;gap:18px}
+.s-ring{width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center}
+.s-ring i{font-size:42px;color:#a8d4f5}
+.s-logo{font-size:30px;font-weight:700;color:#fff;letter-spacing:-1px}
+.s-logo span{color:#a8d4f5}
+.s-sub{font-size:11px;color:#a8c8e8;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+.s-tag{font-size:14px;color:#d0e8f8;font-style:italic;line-height:1.6}
+.s-cta{width:100%;padding:14px;background:#fff;color:var(--ua);border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit}
+.s-cta:hover{background:#f0f4f8}
+.s-ft{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px}
+.modul-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mc{border:0.5px solid var(--brd);border-radius:var(--radl);padding:14px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .15s}
+.mc:hover{background:var(--ua3);border-color:var(--ua4)}
+.mc i{font-size:24px;display:block;margin-bottom:6px;color:var(--ua)}
+.mc .mn{font-size:12px;font-weight:600;color:var(--txt)}
+.mc .ms{font-size:10px;color:var(--txt2);margin-top:2px}
+.animal-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.acard{background:#fff;border:0.5px solid var(--brd);border-radius:var(--radl);padding:12px 14px;display:flex;align-items:center;gap:10px}
+.aico{width:38px;height:38px;border-radius:10px;background:var(--ua3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.aico i{font-size:20px;color:var(--ua)}
+.ainfo{flex:1}
+.an{font-size:13px;font-weight:600;color:var(--txt)}
+.as2{font-size:11px;color:var(--txt2);margin-top:2px}
+.adel{width:28px;height:28px;border-radius:50%;border:none;background:var(--r50);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.adel i{font-size:14px;color:var(--r600)}
+.add-btn{width:100%;padding:11px;border:1.5px dashed var(--ua4);border-radius:var(--radl);background:var(--ua3);color:var(--ua);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;font-family:inherit}
+.add-form{background:var(--ua3);border:0.5px solid var(--ua4);border-radius:var(--radl);padding:13px 14px;margin-bottom:12px}
+.af-title{font-size:12px;font-weight:600;color:var(--ua5);margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.pill{padding:5px 11px;border-radius:20px;font-size:12px;cursor:pointer;border:0.5px solid var(--brd2);background:#fff;color:var(--txt2);transition:all .12s;font-family:inherit}
+.pill.on{background:var(--ua);border-color:var(--ua);color:#fff}
+.af-save{width:100%;padding:9px;background:var(--ua);color:#fff;border:none;border-radius:var(--rad);font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;font-family:inherit}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.kpi{background:#f5f5f5;border-radius:var(--rad);padding:10px 12px}
+.kpi .kl{font-size:11px;color:var(--txt2)}
+.kpi .kv{font-size:20px;font-weight:600;color:var(--txt);margin-top:2px}
+.kpi .ku{font-size:10px;color:var(--txt2)}
+.sem{border-radius:var(--radl);padding:13px;margin-bottom:8px}
+.sem-v{background:var(--g50);border:0.5px solid var(--g100)}
+.sem-a{background:var(--a50);border:0.5px solid var(--a100)}
+.sem-r{background:var(--r50);border:0.5px solid var(--r100)}
+.sem-row{display:flex;align-items:flex-start;gap:10px}
+.sem-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.dv{background:var(--g600)}.da{background:var(--a600)}.dr{background:var(--r600)}
+.st2{font-size:13px;font-weight:600}
+.sem-v .st2{color:var(--g800)}.sem-a .st2{color:var(--a800)}.sem-r .st2{color:var(--r800)}
+.sd2{font-size:11px;margin-top:2px;line-height:1.5}
+.sem-v .sd2{color:var(--g600)}.sem-a .sd2{color:var(--a600)}.sem-r .sd2{color:var(--r600)}
+.reto-card{background:#fff;border:0.5px solid var(--brd);border-radius:var(--radl);padding:13px 15px;margin-bottom:8px}
+.reto-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.reto-name{font-size:12px;font-weight:600;color:var(--txt)}
+.reto-pct{font-size:12px;font-weight:600;color:var(--ua)}
+.reto-bar{background:#f0f0f0;height:6px;border-radius:3px}
+.reto-fill{height:100%;border-radius:3px;background:var(--ua)}
+.reto-vals{display:flex;justify-content:space-between;margin-top:4px}
+.reto-val{font-size:10px;color:var(--txt2)}
+.inv-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f5f5f5;border-radius:var(--rad);margin-bottom:6px}
+.inv-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.inv-name{font-size:12px;color:var(--txt);flex:1}
+.inv-cnt{font-size:12px;font-weight:600;color:var(--txt)}
+.quote{border-left:2px solid var(--ua4);padding-left:11px;font-size:12px;color:var(--ua);font-style:italic;line-height:1.6;margin:10px 0}
+.btn-cotiz{width:100%;padding:12px;background:var(--ua);color:#fff;border:none;border-radius:var(--rad);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px;font-family:inherit}
+.btn-nuevo{width:100%;padding:10px;background:#fff;color:var(--txt2);border:0.5px solid var(--brd2);border-radius:var(--rad);font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit}
+.tec-item{display:flex;align-items:center;gap:10px;border:0.5px solid var(--brd);border-radius:var(--rad);padding:10px 12px;cursor:pointer;background:#fff;margin-bottom:7px}
+.tec-item:hover{background:var(--ua3);border-color:var(--ua4)}
+.tec-item.sel{background:var(--ua3);border-color:var(--ua)}
+.tec-item.sel i{color:var(--ua)}
+.tec-item i{font-size:20px;color:var(--gr400)}
+.tec-name{font-size:12px;font-weight:600;color:var(--txt)}
+.tec-desc{font-size:10px;color:var(--txt2)}
+.chk{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--brd2);flex-shrink:0;margin-left:auto}
+.tec-item.sel .chk{background:var(--ua);border-color:var(--ua)}
+.prox-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rad);margin-bottom:7px}
+.prox-r{background:var(--r50);border:0.5px solid var(--r100)}
+.prox-a{background:var(--a50);border:0.5px solid var(--a100)}
+.prox-g{background:var(--g50);border:0.5px solid var(--g100)}
+.prox-day{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;text-align:center;line-height:1.2}
+.prox-r .prox-day{background:var(--r100);color:var(--r800)}
+.prox-a .prox-day{background:var(--a100);color:var(--a800)}
+.prox-g .prox-day{background:var(--g100);color:var(--g800)}
+.prox-ev{font-size:12px;font-weight:600}
+.prox-r .prox-ev{color:var(--r800)}.prox-a .prox-ev{color:var(--a800)}.prox-g .prox-ev{color:var(--g800)}
+.prox-dt{font-size:10px;margin-top:2px}
+.prox-r .prox-dt{color:var(--r600)}.prox-a .prox-dt{color:var(--a600)}.prox-g .prox-dt{color:var(--g600)}
+.bar-chart{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-lbl{font-size:11px;color:var(--txt2);width:60px;flex-shrink:0;text-align:right}
+.bar-track{flex:1;background:#f0f0f0;height:14px;border-radius:3px}
+.bar-fill{height:100%;border-radius:3px;background:var(--ua);display:flex;align-items:center;padding-right:4px;justify-content:flex-end}
+.bar-fill span{font-size:9px;color:#fff;font-weight:600}
+.sin-badge{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--r50);border-radius:var(--rad);border:0.5px solid var(--r100);margin-bottom:4px}
+.sin-badge i{font-size:18px;color:var(--r600);flex-shrink:0}
+.sin-badge div{font-size:12px;color:var(--r800)}
+.empty-msg{text-align:center;padding:20px 10px;color:var(--txt2);font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="frame">
+
+<!-- SPLASH -->
+<div class="sc on" id="s0">
+  <div class="sb"><span>uniagro</span><span><i class="ti ti-wifi" style="font-size:12px"></i></span></div>
+  <div class="splash-body">
+    <div class="s-ring"><i class="ti ti-shield-check"></i></div>
+    <div>
+      <div class="s-logo">uni<span>agro</span></div>
+      <div class="s-sub">Universales · Banco de Antigua</div>
+    </div>
+    <div class="s-tag">"Cada día en el campo merece tranquilidad."</div>
+    <button class="s-cta" onclick="go('s-menu')">
+      <i class="ti ti-arrow-right" style="font-size:15px;vertical-align:-2px;margin-right:4px"></i>
+      Empezar a proteger mi ganado
+    </button>
+    <div class="s-ft">Proceso 100% digital · Seguros Universales</div>
+  </div>
+</div>
+
+<!-- MENÚ -->
+<div class="sc" id="s-menu">
+  <div class="sb"><span>uniagro</span><span><i class="ti ti-user-circle" style="font-size:14px"></i></span></div>
+  <div class="hdr" style="padding-bottom:14px">
+    <div class="hico"><i class="ti ti-layout-grid"></i></div>
+    <div><div class="ht">Mis módulos</div><div class="hs">¿Qué quieres registrar hoy?</div></div>
+  </div>
+  <div class="body">
+    <div class="stl">Registro</div>
+    <div class="modul-grid">
+      <div class="mc" onclick="go('s1')"><i class="ti ti-user"></i><div class="mn">Ganadero</div><div class="ms">Datos personales</div></div>
+      <div class="mc" onclick="go('s2')"><i class="ti ti-home"></i><div class="mn">Finca</div><div class="ms">Ubicación y área</div></div>
+      <div class="mc" onclick="go('s3')"><i class="ti ti-garden-cart"></i><div class="mn">Hato</div><div class="ms">Mis animales</div></div>
+      <div class="mc" onclick="go('s4')"><i class="ti ti-droplet"></i><div class="mn">Condiciones</div><div class="ms">Agua y pasto</div></div>
+    </div>
+    <div class="stl" style="margin-top:4px">Gestión</div>
+    <div class="modul-grid">
+      <div class="mc" onclick="go('s5')"><i class="ti ti-building"></i><div class="mn">Instalaciones</div><div class="ms">Estado y manejo</div></div>
+      <div class="mc" onclick="go('s6')"><i class="ti ti-alert-triangle"></i><div class="mn">Siniestros</div><div class="ms">Reportar evento</div></div>
+      <div class="mc" onclick="go('s7')"><i class="ti ti-heart-rate-monitor"></i><div class="mn">Profilaxis</div><div class="ms">Plan sanitario</div></div>
+      <div class="mc" onclick="go('s8')"><i class="ti ti-chart-bar"></i><div class="mn">Panel</div><div class="ms">Mi finca en números</div></div>
+    </div>
+    <div class="quote">"Estamos contigo en cada paso del campo."</div>
+  </div>
+</div>
+
+<!-- M1 GANADERO -->
+<div class="sc" id="s1">
+  <div class="sb"><span>uniagro</span><span>Módulo 1</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s-menu')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-user"></i></div>
+    <div><div class="ht">Registro del ganadero</div><div class="hs">Datos personales</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:12%"></div></div><div class="pgl">Módulo 1 de 8</div></div>
+  <div class="body">
+    <div class="card">
+      <div class="ct"><i class="ti ti-user-circle"></i>Datos personales</div>
+      <label>Nombre completo</label><input type="text" placeholder="Juan Pérez López" />
+      <label>DPI / NIT</label><input type="text" placeholder="Número de identificación" />
+      <label>Teléfono</label><input type="text" placeholder="+502 0000 0000" />
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-credit-card"></i>Vinculación Bantigua</div>
+      <label>Número de crédito</label><input type="text" placeholder="Ej. BDA-2025-00123" />
+      <label>Agencia</label>
+      <select><option value="">Seleccionar agencia</option><option>Guatemala</option><option>Escuintla</option><option>Retalhuleu</option><option>Petén</option><option>Alta Verapaz</option></select>
+    </div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s-menu')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s2')">Continuar <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M2 FINCA -->
+<div class="sc" id="s2">
+  <div class="sb"><span>uniagro</span><span>Módulo 2</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s1')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-home"></i></div>
+    <div><div class="ht">Registro de la finca</div><div class="hs">Ubicación y área</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:25%"></div></div><div class="pgl">Módulo 2 de 8</div></div>
+  <div class="body">
+    <div class="card">
+      <div class="ct"><i class="ti ti-home"></i>Datos de la finca</div>
+      <label>Nombre de la finca</label><input type="text" placeholder="Ej. Finca El Rosario" />
+      <label>Región / Municipio</label><input type="text" placeholder="Ej. Escuintla, Guatemala" />
+      <div class="g2" style="margin-top:8px">
+        <div><label style="margin-top:0">Área total</label><input type="number" placeholder="0" /></div>
+        <div><label style="margin-top:0">Unidad</label><select><option>Manzanas</option><option>Hectáreas</option></select></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-map-pin"></i>Geolocalización</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:4px 0">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--ua3);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-current-location" style="font-size:17px;color:var(--ua)"></i></div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--txt)" id="gps2">Sin capturar</div><div style="font-size:11px;color:var(--txt2)">Toca GPS para capturar</div></div>
+        <button onclick="document.getElementById('gps2').textContent='14.6349°N 91.5353°W';document.getElementById('gps2').style.color='var(--ua)'" style="font-size:12px;padding:6px 10px;border-radius:var(--rad);border:0.5px solid var(--brd2);background:#fff;color:var(--txt2);cursor:pointer;font-family:inherit"><i class="ti ti-gps" style="font-size:12px;vertical-align:-2px"></i> GPS</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-camera"></i>Fotografía</div>
+      <div style="border:1.5px dashed var(--brd2);border-radius:var(--rad);padding:18px;text-align:center;cursor:pointer" onclick="this.style.background='var(--ua3)'"><i class="ti ti-camera-plus" style="font-size:26px;display:block;margin-bottom:5px;color:var(--gr400)"></i><div style="font-size:12px;color:var(--txt2)">Tomar o subir foto</div></div>
+    </div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s1')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s3')">Continuar <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M3 HATO -->
+<div class="sc" id="s3">
+  <div class="sb"><span>uniagro</span><span>Módulo 3</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s2')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-garden-cart"></i></div>
+    <div><div class="ht">Registro del hato</div><div class="hs">Agrega cada grupo de animales</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:37%"></div></div><div class="pgl">Módulo 3 de 8</div></div>
+  <div class="body">
+    <div id="animal-list" class="animal-list"></div>
+    <button class="add-btn" onclick="showAddForm()" id="add-btn-main"><i class="ti ti-plus" style="font-size:16px"></i> Agregar grupo de animales</button>
+    <div class="add-form" id="add-form" style="display:none">
+      <div class="af-title"><i class="ti ti-edit" style="font-size:14px"></i>Nuevo grupo</div>
+      <label style="margin-top:0">Especie</label>
+      <div class="pill-row">
+        <div class="pill" onclick="selPill(this,'esp')">Bovino</div>
+        <div class="pill" onclick="selPill(this,'esp')">Porcino</div>
+        <div class="pill" onclick="selPill(this,'esp')">Avícola</div>
+      </div>
+      <label>Propósito</label>
+      <div class="pill-row">
+        <div class="pill" onclick="selPill(this,'prop')">Lechero</div>
+        <div class="pill" onclick="selPill(this,'prop')">Engorde</div>
+        <div class="pill" onclick="selPill(this,'prop')">Crianza</div>
+        <div class="pill" onclick="selPill(this,'prop')">Doble prop.</div>
+      </div>
+      <label>Raza</label><input type="text" id="af-raza" placeholder="Ej. Brahman, Holstein..." />
+      <div class="g2" style="margin-top:8px">
+        <div><label style="margin-top:0">Cantidad</label><input type="number" id="af-cant" placeholder="0" /></div>
+        <div><label style="margin-top:0">Peso prom. (lb)</label><input type="number" id="af-peso" placeholder="0" /></div>
+      </div>
+      <div class="g2" style="margin-top:8px">
+        <div><label style="margin-top:0">Edad prom. (meses)</label><input type="number" id="af-edad" placeholder="0" /></div>
+        <div><label style="margin-top:0">Fierro / Marca</label><input type="text" id="af-fierro" placeholder="Ej. FER-01" /></div>
+      </div>
+      <label>Estado de salud</label>
+      <div class="pill-row">
+        <div class="pill" onclick="selPill(this,'salud')">Bueno</div>
+        <div class="pill" onclick="selPill(this,'salud')">Regular</div>
+        <div class="pill" onclick="selPill(this,'salud')">Con tratamiento</div>
+      </div>
+      <label>Foto del grupo</label>
+      <div style="border:1px dashed var(--ua4);border-radius:var(--rad);padding:10px;text-align:center;cursor:pointer;background:#fff" onclick="this.style.background='var(--ua3)'"><i class="ti ti-camera" style="font-size:18px;color:var(--ua);vertical-align:-3px;margin-right:4px"></i><span style="font-size:12px;color:var(--ua)">Agregar foto</span></div>
+      <button class="af-save" onclick="saveAnimal()"><i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Guardar grupo</button>
+      <button onclick="cancelAdd()" style="width:100%;padding:7px;background:transparent;border:none;color:var(--txt2);font-size:12px;cursor:pointer;margin-top:4px;font-family:inherit">Cancelar</button>
+    </div>
+    <div id="hato-empty" class="empty-msg">Aún no has agregado animales.<br>Toca el botón azul para empezar.</div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s2')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s4')">Continuar <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M4 CONDICIONES -->
+<div class="sc" id="s4">
+  <div class="sb"><span>uniagro</span><span>Módulo 4</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s3')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-droplet"></i></div>
+    <div><div class="ht">Agua y pastizal</div><div class="hs">Condiciones de la finca</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:50%"></div></div><div class="pgl">Módulo 4 de 8</div></div>
+  <div class="body">
+    <div class="card">
+      <div class="ct"><i class="ti ti-plant"></i>Pastizal y carga animal</div>
+      <label>¿Tiene pasto propio?</label>
+      <div class="g2" style="margin-top:4px">
+        <div onclick="ynSel(this,'si','pasto')" class="yn-btn" style="padding:8px;border:0.5px solid var(--brd2);border-radius:var(--rad);text-align:center;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-check" style="font-size:13px"></i>Sí</div>
+        <div onclick="ynSel(this,'no','pasto')" class="yn-btn" style="padding:8px;border:0.5px solid var(--brd2);border-radius:var(--rad);text-align:center;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-x" style="font-size:13px"></i>No</div>
+      </div>
+      <label>Área de pastizal (manzanas)</label><input type="number" placeholder="0" id="pasto-area" oninput="calcCarga()" />
+      <label>Total de animales en finca</label><input type="number" placeholder="0" id="total-anim" oninput="calcCarga()" />
+      <label>Carga animal — calculado automático</label>
+      <div id="carga-val" style="padding:8px 10px;background:var(--ua3);border-radius:var(--rad);font-size:14px;font-weight:600;color:var(--ua)">— ingresa área y animales</div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-droplet"></i>Fuente de agua</div>
+      <label>¿Tiene pozo propio?</label>
+      <div class="g2" style="margin-top:4px">
+        <div onclick="ynSel(this,'si','pozo')" class="yn-btn" style="padding:8px;border:0.5px solid var(--brd2);border-radius:var(--rad);text-align:center;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-check" style="font-size:13px"></i>Sí</div>
+        <div onclick="ynSel(this,'no','pozo')" class="yn-btn" style="padding:8px;border:0.5px solid var(--brd2);border-radius:var(--rad);text-align:center;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ti ti-x" style="font-size:13px"></i>No</div>
+      </div>
+      <label style="margin-top:10px">Tipo de fuente principal</label>
+      <div class="pill-row" style="margin-top:6px">
+        <div class="pill" onclick="selPill(this,'wt')">Pozo</div>
+        <div class="pill" onclick="selPill(this,'wt')">Río</div>
+        <div class="pill" onclick="selPill(this,'wt')">Nacimiento</div>
+        <div class="pill" onclick="selPill(this,'wt')">Municipal</div>
+        <div class="pill" onclick="selPill(this,'wt')">Pila</div>
+        <div class="pill" onclick="selPill(this,'wt')">Sin fuente</div>
+      </div>
+    </div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s3')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s5')">Continuar <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M5 INSTALACIONES -->
+<div class="sc" id="s5">
+  <div class="sb"><span>uniagro</span><span>Módulo 5</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s4')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-building"></i></div>
+    <div><div class="ht">Instalaciones</div><div class="hs">Estado y tecnificación</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:62%"></div></div><div class="pgl">Módulo 5 de 8</div></div>
+  <div class="body">
+    <div class="stl">Nivel de tecnificación</div>
+    <div class="tec-item" onclick="selTec(this)"><i class="ti ti-building-factory"></i><div style="flex:1"><div class="tec-name">Tecnificado</div><div class="tec-desc">Corrales techados · equipo ordeño · sanidad establecida</div></div><div class="chk"></div></div>
+    <div class="tec-item" onclick="selTec(this)"><i class="ti ti-tool"></i><div style="flex:1"><div class="tec-name">Semi-tecnificado</div><div class="tec-desc">Infraestructura básica · registros parciales</div></div><div class="chk"></div></div>
+    <div class="tec-item" onclick="selTec(this)"><i class="ti ti-tree"></i><div style="flex:1"><div class="tec-name">Tradicional / extensivo</div><div class="tec-desc">Potrero · sin instalaciones formales</div></div><div class="chk"></div></div>
+    <div class="tec-item" onclick="selTec(this)"><i class="ti ti-seedling"></i><div style="flex:1"><div class="tec-name">En desarrollo</div><div class="tec-desc">Productor pequeño · instalaciones mínimas</div></div><div class="chk"></div></div>
+    <div class="card" style="margin-top:4px">
+      <div class="ct"><i class="ti ti-recycle"></i>Manejo de desechos</div>
+      <div class="pill-row" style="margin-top:4px">
+        <div class="pill" onclick="selPill(this,'des')">Fosa séptica</div>
+        <div class="pill" onclick="selPill(this,'des')">Compostaje</div>
+        <div class="pill" onclick="selPill(this,'des')">Biodigestor</div>
+        <div class="pill" onclick="selPill(this,'des')">Ninguno</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-list-check"></i>Estado general</div>
+      <label style="margin-top:0">Observaciones de instalaciones</label>
+      <textarea style="height:60px;resize:none" placeholder="Describe el estado de corrales, bebederos, comederos..."></textarea>
+    </div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s4')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s6')">Continuar <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M6 SINIESTROS -->
+<div class="sc" id="s6">
+  <div class="sb"><span>uniagro</span><span>Módulo 6</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s5')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-alert-triangle"></i></div>
+    <div><div class="ht">Registro de siniestros</div><div class="hs">Reportar un evento</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:75%"></div></div><div class="pgl">Módulo 6 de 8</div></div>
+  <div class="body">
+    <div class="card">
+      <div class="ct"><i class="ti ti-alert-circle"></i>Tipo de evento</div>
+      <div class="pill-row" style="margin-top:4px">
+        <div class="pill" onclick="selPill(this,'sin')">Muerte</div>
+        <div class="pill" onclick="selPill(this,'sin')">Accidente</div>
+        <div class="pill" onclick="selPill(this,'sin')">Enfermedad</div>
+        <div class="pill" onclick="selPill(this,'sin')">Sacrificio forzoso</div>
+        <div class="pill" onclick="selPill(this,'sin')">Fenómeno natural</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-list-details"></i>Detalle del animal</div>
+      <label>ID / Número del animal</label><input type="text" placeholder="Ej. BDA-045" />
+      <div class="g2" style="margin-top:8px">
+        <div><label style="margin-top:0">Especie</label><select><option value="">Seleccionar</option><option>Bovino</option><option>Porcino</option><option>Avícola</option></select></div>
+        <div><label style="margin-top:0">Fecha del evento</label><input type="text" placeholder="dd/mm/aaaa" /></div>
+      </div>
+      <label>Descripción del evento</label>
+      <textarea style="height:60px;resize:none" placeholder="Describe brevemente lo que ocurrió..."></textarea>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-camera"></i>Evidencia fotográfica</div>
+      <div style="border:1.5px dashed var(--brd2);border-radius:var(--rad);padding:14px;text-align:center;cursor:pointer" onclick="this.style.background='var(--r50)'"><i class="ti ti-camera-plus" style="font-size:24px;display:block;margin-bottom:5px;color:var(--gr400)"></i><div style="font-size:12px;color:var(--txt2)">Foto del animal o del evento</div></div>
+    </div>
+    <div class="sin-badge"><i class="ti ti-phone-call"></i><div>Emergencia 24/7: <strong>1800-UNIAGRO</strong> · Telemedicina veterinaria disponible</div></div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s5')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s7')">Continuar <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M7 PROFILAXIS -->
+<div class="sc" id="s7">
+  <div class="sb"><span>uniagro</span><span>Módulo 7</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s6')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-heart-rate-monitor"></i></div>
+    <div><div class="ht">Profilaxis</div><div class="hs">Plan sanitario del hato</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:87%"></div></div><div class="pgl">Módulo 7 de 8</div></div>
+  <div class="body">
+    <div class="stl">Próximos eventos — vacas</div>
+    <div class="prox-item prox-r"><div class="prox-day">Día<br>540</div><div style="flex:1"><div class="prox-ev">Vitaminado</div><div class="prox-dt">Vence en 3 días · Sagraymic + Doranic ad3e</div></div><i class="ti ti-clock" style="font-size:16px;color:var(--r600)"></i></div>
+    <div class="prox-item prox-a"><div class="prox-day">Día<br>600</div><div style="flex:1"><div class="prox-ev">Tratamiento celo F1</div><div class="prox-dt">En 2 semanas · Prostaglandina · Kyrofosan</div></div><i class="ti ti-calendar" style="font-size:16px;color:var(--a600)"></i></div>
+    <div class="prox-item prox-g"><div class="prox-day">Día<br>630</div><div style="flex:1"><div class="prox-ev">Palpado</div><div class="prox-dt">En 1 mes · Diagnóstico de preñez</div></div><i class="ti ti-check" style="font-size:16px;color:var(--g600)"></i></div>
+    <div class="stl" style="margin-top:4px">Plan becerros — progreso del ciclo</div>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-lbl">Vitaminado</div><div class="bar-track"><div class="bar-fill" style="width:85%"><span>Día 30</span></div></div></div>
+      <div class="bar-row"><div class="bar-lbl">Bañado</div><div class="bar-track"><div class="bar-fill" style="width:60%"><span>Día 45</span></div></div></div>
+      <div class="bar-row"><div class="bar-lbl">Marcado</div><div class="bar-track"><div class="bar-fill" style="width:38%"><span>Día 120</span></div></div></div>
+      <div class="bar-row"><div class="bar-lbl">Destete</div><div class="bar-track"><div class="bar-fill" style="width:18%"><span>Día 210</span></div></div></div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-file-invoice"></i>Costo profilaxis estimado</div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kl">Vacas / ciclo</div><div class="kv">Q1,504</div></div>
+        <div class="kpi"><div class="kl">Becerros / cabeza</div><div class="kv">Q568</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="nf">
+    <button class="bb" onclick="go('s6')"><i class="ti ti-arrow-left" style="font-size:15px"></i></button>
+    <button class="bn" onclick="go('s8')">Ver mi panel <i class="ti ti-chart-bar" style="font-size:15px"></i></button>
+  </div>
+</div>
+
+<!-- M8 PANEL -->
+<div class="sc" id="s8">
+  <div class="sb"><span>uniagro</span><span>Módulo 8</span></div>
+  <div class="hdr">
+    <button class="hbk" onclick="go('s7')"><i class="ti ti-arrow-left"></i></button>
+    <div class="hico"><i class="ti ti-chart-bar"></i></div>
+    <div><div class="ht">Mi finca en números</div><div class="hs">Panel del productor</div></div>
+  </div>
+  <div class="pgw"><div class="pgt"><div class="pgf" style="width:100%"></div></div><div class="pgl">Módulo 8 de 8 — Completado</div></div>
+  <div class="body">
+    <div class="stl">Semáforo de salud de la finca</div>
+    <div class="sem sem-v"><div class="sem-row"><div class="sem-dot dv"></div><div><div class="st2">Hato en buen estado</div><div class="sd2">Inventario y registros al día. Sigue así.</div></div></div></div>
+    <div class="sem sem-a"><div class="sem-row"><div class="sem-dot da"></div><div><div class="st2">Carga animal por mejorar</div><div class="sd2">1.3 UGA/Mz actual vs meta 2.5. Rotar potreros puede ayudar.</div></div></div></div>
+    <div class="sem sem-r" style="margin-bottom:14px"><div class="sem-row"><div class="sem-dot dr"></div><div><div class="st2">Profilaxis vence pronto</div><div class="sd2">Vitaminado en 3 días. Coordina con tu veterinario.</div></div></div></div>
+    <div class="stl">Indicadores clave</div>
+    <div class="kpi-row" style="margin-bottom:14px">
+      <div class="kpi"><div class="kl">Inventario total</div><div class="kv">87</div><div class="ku">cabezas</div></div>
+      <div class="kpi"><div class="kl">Carga animal</div><div class="kv">1.3</div><div class="ku">UGA/Mz</div></div>
+      <div class="kpi"><div class="kl">% preñez</div><div class="kv">63%</div><div class="ku">meta 95%</div></div>
+      <div class="kpi"><div class="kl">Mortalidad</div><div class="kv">4.0%</div><div class="ku">meta 2%</div></div>
+    </div>
+    <div class="stl">Retos BDA — progreso 2025</div>
+    <div class="reto-card"><div class="reto-hdr"><div class="reto-name">1er reto — Preñez 95%</div><div class="reto-pct">63%</div></div><div class="reto-bar"><div class="reto-fill" style="width:63%"></div></div><div class="reto-vals"><div class="reto-val">Actual: 63%</div><div class="reto-val">Meta: 95%</div></div></div>
+    <div class="reto-card"><div class="reto-hdr"><div class="reto-name">2do reto — Peso 500 lb / 7 meses</div><div class="reto-pct">82%</div></div><div class="reto-bar"><div class="reto-fill" style="width:82%"></div></div><div class="reto-vals"><div class="reto-val">Actual: 410 lb</div><div class="reto-val">Meta: 500 lb</div></div></div>
+    <div class="reto-card" style="margin-bottom:14px"><div class="reto-hdr"><div class="reto-name">3er reto — Carga 2.5 UGA/Mz</div><div class="reto-pct">52%</div></div><div class="reto-bar"><div class="reto-fill" style="width:52%"></div></div><div class="reto-vals"><div class="reto-val">Actual: 1.3</div><div class="reto-val">Meta: 2.5</div></div></div>
+    <div class="stl">Inventario por lote</div>
+    <div class="inv-row"><div class="inv-dot" style="background:var(--ua)"></div><div class="inv-name">Vacas en producción</div><div class="inv-cnt">32</div></div>
+    <div class="inv-row"><div class="inv-dot" style="background:#3B6D11"></div><div class="inv-name">Becerros 0–3 meses</div><div class="inv-cnt">18</div></div>
+    <div class="inv-row"><div class="inv-dot" style="background:#854F0B"></div><div class="inv-name">Novillas</div><div class="inv-cnt">15</div></div>
+    <div class="inv-row"><div class="inv-dot" style="background:#888780"></div><div class="inv-name">Toros</div><div class="inv-cnt">4</div></div>
+    <div class="inv-row" style="margin-bottom:14px"><div class="inv-dot" style="background:#A32D2D"></div><div class="inv-name">Enfermería</div><div class="inv-cnt">2</div></div>
+    <div class="quote">"Tu esfuerzo merece respaldo real. Protege hoy lo que te da de vivir."</div>
+    <button class="btn-cotiz"><i class="ti ti-shield-check" style="font-size:16px"></i>Solicitar cotización de seguro</button>
+    <button class="btn-nuevo" onclick="go('s-menu')"><i class="ti ti-layout-grid" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Volver al menú principal</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+var animals=[];var curEsp='';var curProp='';
+function go(id){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));var el=document.getElementById(id);if(el)el.classList.add('on');window.scrollTo(0,0)}
+function selPill(el,g){var p=el.parentElement;p.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));el.classList.add('on');if(g==='esp')curEsp=el.textContent;if(g==='prop')curProp=el.textContent}
+function selTec(el){document.querySelectorAll('.tec-item').forEach(d=>{d.classList.remove('sel');var i=d.querySelector('i');if(i)i.style.color='var(--gr400)'});el.classList.add('sel');var i=el.querySelector('i');if(i)i.style.color='var(--ua)'}
+function ynSel(el,val,group){var p=el.parentElement;p.querySelectorAll('.yn-btn').forEach(x=>{x.style.background='';x.style.borderColor='';x.style.color=''});if(val==='si'){el.style.background='var(--g50)';el.style.borderColor='var(--g600)';el.style.color='var(--g800)'}else{el.style.background='var(--r50)';el.style.borderColor='var(--r600)';el.style.color='var(--r800)'}}
+function showAddForm(){document.getElementById('add-form').style.display='block';document.getElementById('add-btn-main').style.display='none';curEsp='';curProp='';document.querySelectorAll('#add-form .pill').forEach(p=>p.classList.remove('on'));['af-raza','af-cant','af-peso','af-edad','af-fierro'].forEach(id=>{var el=document.getElementById(id);if(el)el.value=''})}
+function cancelAdd(){document.getElementById('add-form').style.display='none';document.getElementById('add-btn-main').style.display='flex'}
+function saveAnimal(){var raza=document.getElementById('af-raza').value||'Sin raza';var cant=document.getElementById('af-cant').value||'0';var peso=document.getElementById('af-peso').value||'0';var esp=curEsp||'Bovino';var prop=curProp||'Engorde';var icons={'Bovino':'ti-garden-cart','Porcino':'ti-pig','Avícola':'ti-feather'};var ic=icons[esp]||'ti-garden-cart';animals.push({esp,prop,raza,cant,peso,ic});renderAnimals();document.getElementById('add-form').style.display='none';document.getElementById('add-btn-main').style.display='flex';document.getElementById('hato-empty').style.display='none'}
+function delAnimal(idx){animals.splice(idx,1);renderAnimals();if(animals.length===0)document.getElementById('hato-empty').style.display='block'}
+function renderAnimals(){var list=document.getElementById('animal-list');list.innerHTML='';animals.forEach(function(a,i){var d=document.createElement('div');d.className='acard';d.innerHTML='<div class="aico"><i class="ti '+a.ic+'"></i></div><div class="ainfo"><div class="an">'+a.esp+' · '+a.prop+'</div><div class="as2">'+a.raza+' · '+a.cant+' animales · '+a.peso+' lb prom.</div></div><button class="adel" onclick="delAnimal('+i+')" aria-label="Eliminar"><i class="ti ti-trash"></i></button>';list.appendChild(d)})}
+function calcCarga(){var area=parseFloat(document.getElementById('pasto-area').value)||0;var anim=parseFloat(document.getElementById('total-anim').value)||0;var el=document.getElementById('carga-val');if(area>0&&anim>0){var c=(anim/area).toFixed(2);el.textContent=c+' UGA/Mz';var cn=parseFloat(c);el.style.color=cn>=2?'var(--g600)':cn>=1.3?'var(--a600)':'var(--r600)'}else{el.textContent='— ingresa área y animales';el.style.color='var(--ua)'}}
+</script>
+</body>
+</html>
