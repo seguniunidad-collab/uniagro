@@ -5,8 +5,6 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `<div class="frame"><router-outlet /></div>`,
-  styles: `
-    :host { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
-  `,
+  styles: `:host{display:flex;flex-direction:column;flex:1;width:100%}`,
 })
 export class App {}

@@ -7,13 +7,13 @@ import { StateService } from '../../services/state';
   imports: [],
   styles: `:host{display:flex;flex-direction:column;flex:1}`,
   template: `
-    <div class="sb"><span>uniagro</span><span>M4</span></div>
+    <div class="sb"><div class="sb-logo"><div class="sb-dot"></div><span class="sb-wordmark">uni<span>agro</span></span></div><span class="sb-right">M4 · Condiciones</span></div>
     <div class="hdr">
       <button class="hbk" (click)="back()"><i class="ti ti-arrow-left"></i></button>
-      <div class="hico"><i class="ti ti-droplet"></i></div>
-      <div><div class="ht">Agua y pastizal</div><div class="hs">Condiciones de la finca</div></div>
+      <div class="hdr-brand"><div class="hdr-title">Agua y pastizal</div><div class="hdr-sub">Condiciones de la finca</div></div>
+      <div class="hdr-logo"><svg viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" width="70" height="24"><text x="0" y="19" font-family="Arial,sans-serif" font-weight="900" font-size="20" fill="#fff" letter-spacing="-.5">uniagro</text><line x1="29" y1="1" x2="29" y2="6" stroke="#75B052" stroke-width="1.8"/><path d="M26 5 Q29 0 32 5" fill="#75B052"/></svg></div>
     </div>
-    <div class="pgw"><div class="pgt"><div class="pgf" style="width:50%"></div></div><div class="pgl">Módulo 4 de 8</div></div>
+    <div class="pgw"><div class="pgt"><div class="pgf" style="width:50%"></div></div><div class="pgl"><span>Módulo 4 de 8</span><span class="pgl-pct">50%</span></div></div>
     <div class="body">
       <div class="card">
         <div class="ct"><i class="ti ti-plant"></i>Pastizal y carga animal</div>
@@ -37,7 +37,7 @@ import { StateService } from '../../services/state';
         <label>Total de animales en la finca</label>
         <input type="number" placeholder="0" [value]="st().totalAnim" (input)="set('totalAnim',getVal($event))" />
         <label>Carga animal (UGA/Mz) — calculado</label>
-        <div [style.color]="cargaColor()" style="padding:8px 10px;background:var(--ua3);border-radius:var(--rad);font-size:14px;font-weight:700">
+        <div [style.color]="cargaColor()" style="padding:8px 10px;background:var(--green3);border-radius:var(--rad);font-size:14px;font-weight:700;border:1px solid var(--green4)">
           {{ svc.cargaAnimal() ? svc.cargaAnimal() + ' UGA/Mz' : '— ingresa área y animales' }}
         </div>
       </div>
@@ -90,6 +90,6 @@ export class M4Condiciones {
     const c = parseFloat(this.svc.cargaAnimal() ?? '0');
     return c >= 2 ? 'var(--g600)' : c >= 1.3 ? 'var(--a600)' : c > 0 ? 'var(--r600)' : 'var(--ua)';
   }
-  back() { this.router.navigate(['/m3']); }
+  back() { window.history.back(); }
   next() { this.router.navigate(['/m5']); }
 }

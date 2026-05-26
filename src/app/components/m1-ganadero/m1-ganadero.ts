@@ -10,13 +10,13 @@ import { AGENCIAS } from '../../services/data';
   imports: [FormsModule, SearchDropdown],
   styles: `:host{display:flex;flex-direction:column;flex:1}`,
   template: `
-    <div class="sb"><span>uniagro</span><span>M1</span></div>
+    <div class="sb"><div class="sb-logo"><div class="sb-dot"></div><span class="sb-wordmark">uni<span>agro</span></span></div><span class="sb-right">M1 · Ganadero</span></div>
     <div class="hdr">
       <button class="hbk" (click)="back()"><i class="ti ti-arrow-left"></i></button>
-      <div class="hico"><i class="ti ti-user"></i></div>
-      <div><div class="ht">Registro del ganadero</div><div class="hs">Datos personales</div></div>
+      <div class="hdr-brand"><div class="hdr-title">Registro del ganadero</div><div class="hdr-sub">Datos personales y vinculación</div></div>
+      <div class="hdr-logo"><svg viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" width="70" height="24"><text x="0" y="19" font-family="Arial,sans-serif" font-weight="900" font-size="20" fill="#fff" letter-spacing="-.5">uniagro</text><line x1="29" y1="1" x2="29" y2="6" stroke="#75B052" stroke-width="1.8"/><path d="M26 5 Q29 0 32 5" fill="#75B052"/></svg></div>
     </div>
-    <div class="pgw"><div class="pgt"><div class="pgf" style="width:12%"></div></div><div class="pgl">Módulo 1 de 8</div></div>
+    <div class="pgw"><div class="pgt"><div class="pgf" style="width:12%"></div></div><div class="pgl"><span>Módulo 1 de 8</span><span class="pgl-pct">12%</span></div></div>
     <div class="body">
       <div class="card">
         <div class="ct"><i class="ti ti-user-circle"></i>Datos personales</div>

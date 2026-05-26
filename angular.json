@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/uniagro/browser",
+            "outputPath": "dist/uniagro",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [

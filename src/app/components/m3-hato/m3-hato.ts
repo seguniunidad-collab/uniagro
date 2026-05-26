@@ -13,13 +13,13 @@ const ESP_LABELS: Record<string, string> = { bovino:'🐄 Bovino', porcino:'🐖
   imports: [FormsModule, SearchDropdown],
   styles: `:host{display:flex;flex-direction:column;flex:1}`,
   template: `
-    <div class="sb"><span>uniagro</span><span>M3</span></div>
+    <div class="sb"><div class="sb-logo"><div class="sb-dot"></div><span class="sb-wordmark">uni<span>agro</span></span></div><span class="sb-right">M3 · Hato</span></div>
     <div class="hdr">
       <button class="hbk" (click)="back()"><i class="ti ti-arrow-left"></i></button>
-      <div class="hico"><i class="ti ti-garden-cart"></i></div>
-      <div><div class="ht">Registro del hato</div><div class="hs">Registro individual por animal</div></div>
+      <div class="hdr-brand"><div class="hdr-title">Registro del hato</div><div class="hdr-sub">Registro individual por animal</div></div>
+      <div class="hdr-logo"><svg viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" width="70" height="24"><text x="0" y="19" font-family="Arial,sans-serif" font-weight="900" font-size="20" fill="#fff" letter-spacing="-.5">uniagro</text><line x1="29" y1="1" x2="29" y2="6" stroke="#75B052" stroke-width="1.8"/><path d="M26 5 Q29 0 32 5" fill="#75B052"/></svg></div>
     </div>
-    <div class="pgw"><div class="pgt"><div class="pgf" style="width:37%"></div></div><div class="pgl">Módulo 3 de 8</div></div>
+    <div class="pgw"><div class="pgt"><div class="pgf" style="width:37%"></div></div><div class="pgl"><span>Módulo 3 de 8</span><span class="pgl-pct">37%</span></div></div>
     <div class="body">
       <div class="animal-list">
         @for (a of svc.state().animales; track $index) {
@@ -40,11 +40,15 @@ const ESP_LABELS: Record<string, string> = { bovino:'🐄 Bovino', porcino:'🐖
         </button>
       }
       @if (!svc.state().animales.length && !showForm()) {
-        <div class="empty-msg">Aún no has registrado animales.<br>Toca el botón para empezar.</div>
+        <div class="empty-state">
+          <i class="ti ti-garden-cart"></i>
+          <div class="empty-t">Sin animales registrados</div>
+          <div class="empty-d">Toca el botón para agregar el primer animal al hato.</div>
+        </div>
       }
 
       @if (showForm()) {
-        <div class="card" style="border-color:var(--ua4);background:var(--ua3)">
+        <div class="card" style="border-color:var(--green4);background:var(--green3)">
           <div class="ct" style="color:var(--ua5)">
             <i class="ti ti-edit"></i>Nuevo animal
             <span style="margin-left:auto;font-size:10px;color:var(--ua);font-weight:700">({{ modalCant() }} animales)</span>
@@ -115,7 +119,7 @@ const ESP_LABELS: Record<string, string> = { bovino:'🐄 Bovino', porcino:'🐖
           </div>
           <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFile($event)" />
 
-          <button style="width:100%;padding:10px;background:var(--ua);color:#fff;border:none;border-radius:var(--rad);font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;font-family:inherit" (click)="save()">
+          <button style="width:100%;padding:10px;background:var(--green);color:#fff;border:none;border-radius:var(--rad);font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;font-family:inherit;box-shadow:0 3px 10px rgba(117,176,82,.35)" (click)="save()">
             <i class="ti ti-check" style="font-size:13px;vertical-align:-2px;margin-right:4px"></i>Guardar animal
           </button>
           <button (click)="cancel()" style="width:100%;padding:7px;background:transparent;border:none;color:var(--txt2);font-size:12px;cursor:pointer;margin-top:4px;font-family:inherit">Cancelar</button>
@@ -217,6 +221,6 @@ export class M3Hato {
       else this.form.foto3 = data;
     }; r.readAsDataURL(f);
   }
-  back() { this.router.navigate(['/m2']); }
+  back() { window.history.back(); }
   next() { this.router.navigate(['/m4']); }
 }

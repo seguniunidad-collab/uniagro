@@ -8,11 +8,10 @@ import { StateService } from '../../services/state';
   imports: [FormsModule],
   styles: `:host{display:flex;flex-direction:column;flex:1}`,
   template: `
-    <div class="sb"><span>uniagro</span><span>M6</span></div>
+    <div class="sb"><div class="sb-logo"><div class="sb-dot"></div><span class="sb-wordmark">uni<span>agro</span></span></div><span class="sb-right">M6 · Siniestros</span></div>
     <div class="hdr">
       <button class="hbk" (click)="back()"><i class="ti ti-arrow-left"></i></button>
-      <div class="hico"><i class="ti ti-alert-triangle"></i></div>
-      <div><div class="ht">Registro de siniestros</div><div class="hs">Reportar fallecimiento</div></div>
+      <div class="hdr-brand"><div class="hdr-title">Registro de siniestros</div><div class="hdr-sub">Reportar fallecimiento</div></div>
       <span class="role-tag"><i class="ti ti-lock" style="font-size:10px"></i> Solo agente</span>
     </div>
     <div class="body">

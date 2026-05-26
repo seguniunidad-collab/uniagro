@@ -7,13 +7,13 @@ import { StateService } from '../../services/state';
   imports: [],
   styles: `:host{display:flex;flex-direction:column;flex:1}`,
   template: `
-    <div class="sb"><span>uniagro</span><span>M8</span></div>
+    <div class="sb"><div class="sb-logo"><div class="sb-dot"></div><span class="sb-wordmark">uni<span>agro</span></span></div><span class="sb-right">M8 · Panel</span></div>
     <div class="hdr">
       <button class="hbk" (click)="back()"><i class="ti ti-arrow-left"></i></button>
-      <div class="hico"><i class="ti ti-chart-bar"></i></div>
-      <div><div class="ht">Mi finca en números</div><div class="hs">Panel del productor</div></div>
+      <div class="hdr-brand"><div class="hdr-title">Mi finca en números</div><div class="hdr-sub">Panel del productor</div></div>
+      <div class="hdr-logo"><svg viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" width="70" height="24"><text x="0" y="19" font-family="Arial,sans-serif" font-weight="900" font-size="20" fill="#fff" letter-spacing="-.5">uniagro</text><line x1="29" y1="1" x2="29" y2="6" stroke="#75B052" stroke-width="1.8"/><path d="M26 5 Q29 0 32 5" fill="#75B052"/></svg></div>
     </div>
-    <div class="pgw"><div class="pgt"><div class="pgf" style="width:100%"></div></div><div class="pgl">Módulo 8 de 8 — Completado</div></div>
+    <div class="pgw"><div class="pgt"><div class="pgf" style="width:100%"></div></div><div class="pgl"><span>Módulo 8 de 8 — Completado</span><span class="pgl-pct">100%</span></div></div>
     <div class="body">
       <div class="tabs">
         <button class="tab" [class.on]="tab()==='before'" (click)="tab.set('before')">Antes de asesoría</button>
@@ -100,6 +100,6 @@ export class M8Panel {
     const c = this.svc.cargaAnimal();
     return c ? `${c} UGA/Mz actual. Meta: 2.5.` : '1.3 UGA/Mz actual. Meta: 2.5.';
   }
-  back() { this.router.navigate(['/m7']); }
+  back() { window.history.back(); }
   menu() { this.router.navigate(['/menu']); }
 }
